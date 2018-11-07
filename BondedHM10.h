@@ -110,38 +110,20 @@ public:
     bool connectToPeripheral();
     bool reconnectToPeripheral();
 
-    bool startWork();
     void reset();
-
-    bool setConnectedOutputStatePins(const char* pinHex);
 
     bool getDeviceName(char* deviceName);
     bool setDeviceName(const char* deviceName);
 
     bool getAddress(char* address);
-
     bool getFirmwareVersion(char* versionStr);
-
     bool getRole(Role& role);
-    bool setRole(const Role role);
-
     bool getBaudRate(BaudRate& baudRate);
-    bool setBaudRate(const BaudRate baudRate);
-
     bool getWorkType(WorkType& workType);
-    bool setWorkType(const WorkType workType);
-
     bool getLastConnectedAddress(char* address);
-    bool clearLastConnectedAddress();
-
     bool getWhitelistEnabled(bool& enabled);
-    bool setWhitelistEnabled(const bool enabled);
-
     bool getWhitelistAddress(const WhitelistSlot slot, char* address);
-    bool setWhitelistAddress(const WhitelistSlot slot, const char* address);
-
     bool getBondMode(BondMode& bondMode);
-    bool setBondMode(const BondMode bondMode);
 
 #ifdef DEBUG
     void printDeviceConfig();
@@ -174,10 +156,6 @@ public:
     virtual size_t write(uint8_t);
     virtual size_t write(const uint8_t* buffer, size_t size);
     virtual int availableForWrite();
-
-    bool makeActive();
-    bool isActive();
-    bool makeInactive();
 
     static void handleTransmissionTimerInterrupt();
 
@@ -219,8 +197,18 @@ private:
     void startTransmissionTimer();
     void stopTransmissionTimer();
 
+    bool startWork();
+    bool setConnectedOutputStatePins(const char* pinHex);
+    bool setRole(const Role role);
+    bool setBaudRate(const BaudRate baudRate);
+    bool setWorkType(const WorkType workType);
+    bool clearLastConnectedAddress();
+    bool setWhitelistEnabled(const bool enabled);
+    bool setWhitelistAddress(const WhitelistSlot slot, const char* address);
+    bool setBondMode(const BondMode bondMode);
 
-    static BondedHM10* _activeObject;
+
+    static BondedHM10* _instance;
 
     char* _responseStr = NULL;
     char* _commandStr = NULL;
