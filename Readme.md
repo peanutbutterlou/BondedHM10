@@ -35,7 +35,7 @@ In terms of the BLE 4.0 protocol, a "bonded" connection is an encrypted connecti
 - Two HM-10 modules are required; one to be the Central, and a second to be the Peripheral.
 - In order for the two modules to communicate with each other, they will both first need to be provisioned as either a Central or Peripheral. Refer to the "BondedHM10_Central_Provision" and "BondedHM10_Peripheral_Provision" examples Arduino sketches for how to perform this one-time provisioning procedure.
 - Both modules must be flashed with the 5.27 (or higher) version of the Jinan Huamao firmware.
-- Two pins on the HM-10 (P11 and PIO2) will need to be connected to the Arduino board. P11 is an INPUT used to trigger a Reset of the HM-10 and PIO2 is an OUPUT used to detect whether or not the module is currently connected to its companion. Here is a image of the Central module in my own project with hookup wire soldered on to the two pins: ![Central HM10 Module with hookup wires soldered to the P11 and PIO2 pins](images/BondedHM10_Soldered Pins.JPG)
+- Two pins on the HM-10 (P11 and PIO2) will need to be connected to the Arduino board. P11 is an INPUT used to trigger a Reset of the HM-10 and PIO2 is an OUPUT used to detect whether or not the module is currently connected to its companion. Here is a image of the Central module in my own project with hookup wire soldered on to the two pins: ![Central HM10 Module with hookup wires soldered to the P11 and PIO2 pins](BondedHM10/images/BondedHM10_Soldered Pins.JPG)
 
 <br />
 
