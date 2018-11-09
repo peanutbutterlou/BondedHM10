@@ -68,10 +68,14 @@ In terms of the BLE 4.0 protocol, a "bonded" connection is an encrypted connecti
 - **BondedHM10_Central** - See how to operate the HM-10 module in Central mode using the BondedHM10 library. This example will also demonstrate how to do the following:
     - Configure the Central to attempt to connect to the Peripheral on startup.
     - Configure the Central to attempt to auto-reconnect to the Peripheral, and how often to retry. This is useful in the event of a disconnect or if the connection attempt on startup failed.
-    - How to handle 
+    - Configure an LED to be lit when there is an active connection.
+    - Configure an LED to be blinked when data is being transmitted to/from the local HM-10 module.
+    - Assign local functions to handle special events like when a connection has been established between modules, a connection has been disconnected, and when a custom message or event is recieved.
 - **BondedHM10_Peripheral_Provision** - See how to provision an HM-10 module so that it can operate in "Peripheral" mode and print out to the Serial Monitor the module's MAC address.
 - **BondedHM10_Peripheral** - See how to operate the HM-10 module in Peripheral mode using the BondedHM10 library. This example will also demonstrate how to do the following:
-    - sdsds
+    - Configure an LED to be lit when there is an active connection.
+    - Configure an LED to be blinked when data is being transmitted to/from the local HM-10 module.
+    - Assign local functions to handle special events like when a connection has been established between modules, a connection has been disconnected, and when a custom message or event is recieved.
 - **BondedHM10_ConsoleMode** - See how to put the BondedHM10 library into "Console" mode where, as either a Central or Peripheral, can execute AT commands directly against the local HM-10 module via the Serial Monitor input.
 
 <br />
