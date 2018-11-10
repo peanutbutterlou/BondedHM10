@@ -1,5 +1,5 @@
 {
     "port": "COM3",
     "board": "arduino:avr:uno",
-    "sketch": "BondedHM10_ConsoleMode.ino"
+    "sketch": "BondedHM10_Central_ConsoleMode.ino"
 }

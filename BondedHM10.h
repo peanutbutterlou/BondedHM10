@@ -1,7 +1,10 @@
 
 /*
- *
+ * BondedHM10 is an Arduino Library that facilitates the provisioning, connection and 
+ * communication between two HM-10 Bluetooth LE 4.0 modules.
+ * (https://github.com/peanutbutterlou/BondedHM10)
  * 
+ * Writen by Peanutbutterlou. 
  */
 
 #ifndef BondedHM10_h

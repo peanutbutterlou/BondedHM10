@@ -76,7 +76,7 @@ In terms of the BLE 4.0 protocol, a "bonded" connection is an encrypted connecti
     - Configure an LED to be lit when there is an active connection.
     - Configure an LED to be blinked when data is being transmitted to/from the local HM-10 module.
     - Assign local functions to handle special events like when a connection has been established between modules, a connection has been disconnected, and when a custom message or event is recieved.
-- **BondedHM10_ConsoleMode** - See how to put the BondedHM10 library into "Console" mode where, as either a Central or Peripheral, can execute AT commands directly against the local HM-10 module via the Serial Monitor input.
+- **BondedHM10_Central_ConsoleMode** - See how to put the BondedHM10 library into "Console" mode where, as either a Central or Peripheral, can execute AT commands directly against the local HM-10 module or manually send messages to the remote HM-10 via the Serial Monitor input. This example will focus on allowing the sending of message to the Peripheral from text entered in the Serial Monitor.
 
 <br />
 

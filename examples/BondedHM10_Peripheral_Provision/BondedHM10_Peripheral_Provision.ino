@@ -1,26 +1,32 @@
 #include <BondedHM10.h>
 #include <SoftwareSerial.h>
 
+ /*
+ * BondedHM10_Central_Provision example of the BondedHM10 Arduino library.
+ * (https://github.com/peanutbutterlou/BondedHM10)
+ *
+ * See how to provision an HM-10 module so that it can operate in "Peripheral" mode and 
+ * print out to the Serial Monitor the module's MAC address.
+ * 
+ * Writen by Peanutbutterlou.
+ */
 
-const char* CENTRAL_ADDRESS = "606405CFCA4D";
-const long BAUD_RATE = 9600;
+
+const char* CENTRAL_ADDRESS = "606405CFCA4D"; // MAC address of the Central HM-10 module.
 const byte RX_PIN = 2;
 const byte TX_PIN = 3;
 const byte STATE_PIN = 4;
 const byte RESET_PIN = 5;
-const byte CONNECTED_LED_PIN = 6;
-const byte TRANSMITTED_LED_PIN = 7;
-const byte SEND_PIN = 8;
-const long SENDTESTMESSAGE_BUTTON_DEBOUNCE_TIMEOUT = 500;
-
-enum EventID : uint16_t
-{
-  SensorReading = 0
-};
 
 
-SoftwareSerial btSerial(RX_PIN, TX_PIN);
-BondedHM10 bt(BondedHM10::Role::Peripheral, CENTRAL_ADDRESS, STATE_PIN, RESET_PIN);
+// Instantiate a SoftwareSerial stream to have the HM-10 communicate over.
+// We could also use HardwareSerial or any other class that derives from Stream.
+SoftwareSerial bluetoothSerial(RX_PIN, TX_PIN);
+
+// Instantiate a BondedHM10 object. Unlike with the provisioning of the Central module, we 
+// will need to provide the BondedHM10 constructor with the MAC address of the Central since 
+// during provisioning the library will attempt to whitelist the address.
+BondedHM10 bluetooth(BondedHM10::Role::Peripheral, CENTRAL_ADDRESS, STATE_PIN, RESET_PIN);
 
 
 void setup()
@@ -29,103 +35,35 @@ void setup()
   delay(1000);
 
 
-  pinMode(CONNECTED_LED_PIN, OUTPUT);
-  bt.setConnectedOutputPin(CONNECTED_LED_PIN);
-  
-  pinMode(TRANSMITTED_LED_PIN, OUTPUT);
-  bt.setDataTransmittedOutputPin(TRANSMITTED_LED_PIN);
+  bluetoothSerial.begin(9600); // Setup the SoftwareSerial stream.
+  bluetooth.begin(bluetoothSerial); // Setup the BondedHM10, passing it our serial stream.
 
-  bt.setConnectedHandler(onConnected);
-  bt.setDisconnectedHandler(onDisconnected);
-
-  bt.setMessageReceivedHandler(onMessageReceived);
-  bt.setEventReceivedHandler(onEventReceived);
-
-
-  pinMode(SEND_PIN, INPUT_PULLUP);
-
-
-  btSerial.begin(9600);
-
-  if (bt.begin(btSerial))
+  // Perform the provisioning. If it is successful, print out to the Serial Monitor the MAC 
+  // address of the local HM-10 module.
+  if (bluetooth.provision(BondedHM10::BaudRate::Baud_9600))
   {
-    //bt.provision(BondedHM10::BaudRate::Baud_9600);
+    Serial.println("Provisioning successful.");
 
-    #ifdef DEBUG
-      bt.printDeviceConfig();
-    #endif
+    Serial.print("MAC Address of local HM-10 Module = ");
+
+    char* addressStr = (char*)calloc(32, sizeof(char));
+    if (bluetooth.getAddress(addressStr))
+    {
+      Serial.println(addressStr);
+    }
+    else
+    {
+      Serial.println("FAILED");
+    }
+  }
+  else
+  {
+    Serial.println("Provisioning FAILED");
   }
 }
 
 
 void loop()
 {
-  handleSendTestMessageButton();
-
-  bt.loop();
-}
-
-
-void handleSendTestMessageButton()
-{
-  if (digitalRead(SEND_PIN) == LOW)
-  {
-    for (uint8_t index = 0; index < 10; index++)
-    {
-      sendTestMessage();
-      sendTestEvent();
-    }
-    
-    delay(SENDTESTMESSAGE_BUTTON_DEBOUNCE_TIMEOUT);
-  }
-}
-
-
-void sendTestMessage()
-{
-  bt.writeMessage(F("This is a test message."));
-}
-
-
-void sendTestEvent()
-{
-  const char* sensorReading = "100 degrees";
-  bt.writeEvent(EventID::SensorReading, sensorReading);
-}
-
-
-void onConnected(bool reconnected)
-{
-  if (reconnected)
-  {
-    Serial.println("Reconnected!!!");
-  }
-  else
-  {
-    Serial.println("Connected!!!");
-  }
-}
-
-
-void onDisconnected()
-{
-  Serial.println("Disconnected!!!");
-}
-
-
-void onMessageReceived(const char* content, const uint16_t length)
-{
-  Serial.print("Message received. Content = ");
-  Serial.write(content, length);
-  Serial.println();
-}
-
-
-void onEventReceived(const uint16_t id, const char* content, const uint16_t length)
-{
-  Serial.print("Event received. Event ID = ");
-  Serial.print(id);
-  Serial.print(", Content = ");
-  Serial.write(content, length);
-  Serial.println();
+  
 }
