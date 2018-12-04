@@ -2479,13 +2479,12 @@ void BondedHM10::startTransmissionTimer()
 
   noInterrupts(); // stop interrupts
 
-  TCCR1A = 0; // normal mode
-  TCNT1 = 0;  // set counter to 0
-
-  // Configure Timer1 to trigger once every 1 millisecond.
-  TCCR1B = bit(WGM12) | bit(CS11); // enable CTC mode with the 8 prescalar.
-  OCR1A = 1999;                    // set timer compare value = (16*10^6) / (1000*8) - 1
-  TIMSK1 = bit(OCIE1A);            // enable timer Compare A Match interrupt
+  // We'll be using Timer0 which is already setup to trigger once 
+  // per millisecond, so there is no need to change its prescalar.
+  // We will need to change the compare value and enable the 
+  // Compare A Match interrupt for Timer0.
+  OCR0A = 249;                     // set timer compare value = (16*10^6) / (1000*64) - 1
+  TIMSK0 |= bit(OCIE0A);           // enable timer Compare A Match interrupt
 
   interrupts(); // start interrupts again
 
@@ -2507,8 +2506,7 @@ void BondedHM10::stopTransmissionTimer()
 
   noInterrupts(); // stop interrupts
 
-  TCCR1B = 0; // stop the timer
-  TIMSK1 = 0; // disable timer Compare A Match interrupt
+  TIMSK0 &= ~bit(OCIE0A); // disable Timer0 Compare A Match interrupt
 
   interrupts(); // start interrupts again
 
@@ -2542,7 +2540,7 @@ void BondedHM10::handleTransmissionTimerInterrupt()
   }
 }
 
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER0_COMPA_vect)
 {
   BondedHM10::handleTransmissionTimerInterrupt();
 }

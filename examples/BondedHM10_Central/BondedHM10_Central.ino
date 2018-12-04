@@ -108,7 +108,7 @@ void setup()
 void loop()
 {
   handleSendMessageButton();
-
+  
   bluetooth.loop();
 }
 
